@@ -88,7 +88,5 @@ namespace LaYSoft.BaseCode
         }
 
         #endregion
-
-        
     }
 }

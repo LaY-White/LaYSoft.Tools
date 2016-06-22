@@ -119,7 +119,6 @@ namespace LaYSoft.BaseCode
             // TODO:
             // 扩展：需考虑实体中又包含其他实体的情况？
 
-
             object objValue = null;
             int i = 0;
             if (model != null)
