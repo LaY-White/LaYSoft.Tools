@@ -48,6 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="wf_Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="wf_Main.Designer.cs">
+      <DependentUpon>wf_Main.cs</DependentUpon>
+    </Compile>
     <Compile Include="wf_Test.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -56,6 +62,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="wf_Main.resx">
+      <DependentUpon>wf_Main.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="wf_Test.resx">
       <DependentUpon>wf_Test.cs</DependentUpon>
     </EmbeddedResource>

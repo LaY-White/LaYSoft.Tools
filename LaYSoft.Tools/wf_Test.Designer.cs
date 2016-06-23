@@ -96,6 +96,7 @@
             this.Controls.Add(this.Btn_Edit);
             this.Controls.Add(this.Btn_ADD);
             this.Name = "wf_Test";
+            this.ShowIcon = false;
             this.Text = "Form1";
             this.ResumeLayout(false);
 
