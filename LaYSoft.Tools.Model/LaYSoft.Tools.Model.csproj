@@ -39,8 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System\UserInfo.cs" />
+    <Compile Include="System\UserInfoParams.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LaYSoft.BaseCode\LaYSoft.BaseCode.csproj">
+      <Project>{1fc108f6-cafa-45ce-8a3b-a41cf61d701e}</Project>
+      <Name>LaYSoft.BaseCode</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

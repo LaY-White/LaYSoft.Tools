@@ -48,27 +48,27 @@ namespace LaYSoft.BaseCode.DBClass
         public abstract void RollbackTrans();           //回滚一个事务
 
         //执行Sql语句，返回Int 
-        public abstract int ExecuteNonQuery(CommandType cmdType, string strSql, List<LaYSoftParameter> Pa);
+        public abstract int ExecuteNonQuery(CommandType cmdType, string strSql, ref List<LaYSoftParameter> Pa);
         public abstract int ExecuteNonQuery(CommandType cmdType, string strSql);
-        public abstract int ExecuteNonQuery(string strSql, List<LaYSoftParameter> Pa);
+        public abstract int ExecuteNonQuery(string strSql, ref  List<LaYSoftParameter> Pa);
         public abstract int ExecuteNonQuery(string strSql);
 
         //执行Sql，返回DataTable
-        public abstract DataTable ExecuteDataTable(CommandType cmdType, string strSql, List<LaYSoftParameter> Pa);
+        public abstract DataTable ExecuteDataTable(CommandType cmdType, string strSql, ref  List<LaYSoftParameter> Pa);
         public abstract DataTable ExecuteDataTable(CommandType cmdType, string strSql);
-        public abstract DataTable ExecuteDataTable(string strSql, List<LaYSoftParameter> Pa);
+        public abstract DataTable ExecuteDataTable(string strSql, ref  List<LaYSoftParameter> Pa);
         public abstract DataTable ExecuteDataTable(string strSql);
 
         //执行Sql，返回string
-        public abstract string ExecuteScalar(CommandType cmdType, string strSql, List<LaYSoftParameter> Pa);
+        public abstract string ExecuteScalar(CommandType cmdType, string strSql, ref  List<LaYSoftParameter> Pa);
         public abstract string ExecuteScalar(CommandType cmdType, string strSql);
-        public abstract string ExecuteScalar(string strSql, List<LaYSoftParameter> Pa);
+        public abstract string ExecuteScalar(string strSql, ref  List<LaYSoftParameter> Pa);
         public abstract string ExecuteScalar(string strSql);
 
         //执行Sql，返回int
-        public abstract int ExecuteScalarNum(CommandType cmdType, string strSql, List<LaYSoftParameter> Pa);
+        public abstract int ExecuteScalarNum(CommandType cmdType, string strSql, ref  List<LaYSoftParameter> Pa);
         public abstract int ExecuteScalarNum(CommandType cmdType, string strSql);
-        public abstract int ExecuteScalarNum(string strSql, List<LaYSoftParameter> Pa);
+        public abstract int ExecuteScalarNum(string strSql, ref  List<LaYSoftParameter> Pa);
         public abstract int ExecuteScalarNum(string strSql);
     }
 }

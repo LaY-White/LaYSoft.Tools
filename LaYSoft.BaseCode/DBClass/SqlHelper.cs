@@ -15,7 +15,7 @@ namespace LaYSoft.BaseCode.DBClass
         /// <summary>
         /// 数据连接字段
         /// 首先 CONN_STR 的设置,
-        /// 最后 AppSettings["ConnectionString"] 的数据,
+        /// 最后 ConnectionStrings["ConnectionString"] 的数据,
         /// </summary>
         public static string CONN_STR
         {
@@ -25,7 +25,7 @@ namespace LaYSoft.BaseCode.DBClass
                 //如果已经设置CONN_STR,则直接跳过
                 if (String.IsNullOrEmpty(_CONN_STR))
                 {
-                    return ConfigurationManager.AppSettings["ConnectionString"].ToString();
+                    return ConfigurationManager.ConnectionStrings["ConnectionString"].ToString();
                 }
 
                 return _CONN_STR;
@@ -35,7 +35,7 @@ namespace LaYSoft.BaseCode.DBClass
         private static DBTypeEnum _Dbtype = DBTypeEnum.None;
         /// <summary>
         /// SqlHelper的连接类型,
-        /// 首先 AppSettings["dbtype"] 的数据,
+        /// 首先 ConnectionStrings["dbtype"] 的数据,
         /// 最后 默认None
         /// </summary>
         public static DBTypeEnum Dbtype
@@ -46,7 +46,7 @@ namespace LaYSoft.BaseCode.DBClass
                 if (_Dbtype != DBTypeEnum.None)
                 { return _Dbtype; }
 
-                return DBClassTools.GetDBType(ConfigurationManager.AppSettings["DBType"].ToString());
+                return DBClassTools.GetDBType(ConfigurationManager.ConnectionStrings["DBType"].ToString());
             }
         }
 
@@ -74,7 +74,7 @@ namespace LaYSoft.BaseCode.DBClass
         }
 
         //执行Sql语句，返回Int 
-        public static int ExecuteNonQuery(string connString, CommandType cmdType, string strSql, List<LaYSoftParameter> Pa)
+        public static int ExecuteNonQuery(string connString, CommandType cmdType, string strSql,ref List<LaYSoftParameter> Pa)
         {
             if (string.IsNullOrEmpty(connString))
             { connString = CONN_STR; }
@@ -82,7 +82,7 @@ namespace LaYSoft.BaseCode.DBClass
             DBHelper lnv_Helper = GetDBHelper(Dbtype);
 
             lnv_Helper.ConnString = connString;
-            int li_rel = lnv_Helper.ExecuteNonQuery(cmdType, strSql, Pa);
+            int li_rel = lnv_Helper.ExecuteNonQuery(cmdType, strSql, ref Pa);
 
             lnv_Helper.Close();
 
@@ -91,32 +91,33 @@ namespace LaYSoft.BaseCode.DBClass
 
             return li_rel;
         }
-        public static int ExecuteNonQuery(CommandType cmdType, string strSql, List<LaYSoftParameter> Pa)
+        public static int ExecuteNonQuery(CommandType cmdType, string strSql, ref  List<LaYSoftParameter> Pa)
         {
-            return ExecuteNonQuery(null, cmdType, strSql, Pa);
+            return ExecuteNonQuery(null, cmdType, strSql, ref Pa);
         }
         public static int ExecuteNonQuery(CommandType cmdType, string strSql)
         {
-            return ExecuteNonQuery(null, cmdType, strSql, null);
+            List<LaYSoftParameter> Pa = null;
+            return ExecuteNonQuery(null, cmdType, strSql, ref  Pa);
         }
-        public static int ExecuteNonQuery(string strSql, List<LaYSoftParameter> Pa)
+        public static int ExecuteNonQuery(string strSql, ref List<LaYSoftParameter> Pa)
         {
-            return ExecuteNonQuery(null, CommandType.Text, strSql, Pa);
+            return ExecuteNonQuery(null, CommandType.Text, strSql, ref Pa);
         }
         public static int ExecuteNonQuery(string strSql)
         {
-            return ExecuteNonQuery(null, CommandType.Text, strSql, null);
+            return ExecuteNonQuery( CommandType.Text, strSql);
         }
 
         //执行Sql，返回DataTable
-        public static DataTable ExecuteDataTable(string connString, CommandType cmdType, string strSql, List<LaYSoftParameter> Pa)
+        public static DataTable ExecuteDataTable(string connString, CommandType cmdType, string strSql, ref  List<LaYSoftParameter> Pa)
         {
             if (string.IsNullOrEmpty(connString))
             { connString = CONN_STR; }
 
             DBHelper lnv_Helper = GetDBHelper(Dbtype);
             lnv_Helper.ConnString = connString;
-            DataTable ldt_rel = lnv_Helper.ExecuteDataTable(cmdType, strSql, Pa);
+            DataTable ldt_rel = lnv_Helper.ExecuteDataTable(cmdType, strSql, ref Pa);
             lnv_Helper.Close();
 
             if (!String.IsNullOrEmpty(lnv_Helper.ErrStr))
@@ -124,32 +125,33 @@ namespace LaYSoft.BaseCode.DBClass
 
             return ldt_rel;
         }
-        public static DataTable ExecuteDataTable(CommandType cmdType, string strSql, List<LaYSoftParameter> Pa)
+        public static DataTable ExecuteDataTable(CommandType cmdType, string strSql, ref  List<LaYSoftParameter> Pa)
         {
-            return ExecuteDataTable(null, cmdType, strSql, Pa);
+            return ExecuteDataTable(null, cmdType, strSql, ref Pa);
         }
         public static DataTable ExecuteDataTable(CommandType cmdType, string strSql)
         {
-            return ExecuteDataTable(null, cmdType, strSql, null);
+            List<LaYSoftParameter> Pa = null;
+            return ExecuteDataTable(null, cmdType, strSql, ref  Pa);
         }
-        public static DataTable ExecuteDataTable(string strSql, List<LaYSoftParameter> Pa)
+        public static DataTable ExecuteDataTable(string strSql, ref  List<LaYSoftParameter> Pa)
         {
-            return ExecuteDataTable(null, CommandType.Text, strSql, Pa);
+            return ExecuteDataTable(null, CommandType.Text, strSql, ref Pa);
         }
         public static DataTable ExecuteDataTable(string strSql)
         {
-            return ExecuteDataTable(null, CommandType.Text, strSql, null);
+            return ExecuteDataTable( CommandType.Text, strSql);
         }
 
         //执行Sql，返回string
-        public static string ExecuteScalar(string connString, CommandType cmdType, string strSql, List<LaYSoftParameter> Pa)
+        public static string ExecuteScalar(string connString, CommandType cmdType, string strSql, ref  List<LaYSoftParameter> Pa)
         {
             if (string.IsNullOrEmpty(connString))
             { connString = CONN_STR; }
 
             DBHelper lnv_Helper = GetDBHelper(Dbtype);
             lnv_Helper.ConnString = connString;
-            string ls_rel = lnv_Helper.ExecuteScalar(cmdType, strSql, Pa);
+            string ls_rel = lnv_Helper.ExecuteScalar(cmdType, strSql, ref Pa);
             lnv_Helper.Close();
 
             if (!String.IsNullOrEmpty(lnv_Helper.ErrStr))
@@ -157,48 +159,50 @@ namespace LaYSoft.BaseCode.DBClass
 
             return ls_rel;
         }
-        public static string ExecuteScalar(CommandType cmdType, string strSql, List<LaYSoftParameter> Pa)
+        public static string ExecuteScalar(CommandType cmdType, string strSql, ref  List<LaYSoftParameter> Pa)
         {
-            return ExecuteScalar(null, cmdType, strSql, Pa);
+            return ExecuteScalar(null, cmdType, strSql, ref Pa);
         }
         public static string ExecuteScalar(CommandType cmdType, string strSql)
         {
-            return ExecuteScalar(null, cmdType, strSql, null);
+            List<LaYSoftParameter> Pa = null;
+            return ExecuteScalar(null, cmdType, strSql, ref  Pa);
         }
-        public static string ExecuteScalar(string strSql, List<LaYSoftParameter> Pa)
+        public static string ExecuteScalar(string strSql, ref  List<LaYSoftParameter> Pa)
         {
-            return ExecuteScalar(null, CommandType.Text, strSql, Pa);
+            return ExecuteScalar(null, CommandType.Text, strSql, ref Pa);
         }
         public static string ExecuteScalar(string strSql)
         {
-            return ExecuteScalar(null, CommandType.Text, strSql, null);
+            return ExecuteScalar(CommandType.Text, strSql);
         }
 
         //执行Sql，返回int
-        public static int ExecuteScalarNum(string connString, CommandType cmdType, string strSql, List<LaYSoftParameter> Pa)
+        public static int ExecuteScalarNum(string connString, CommandType cmdType, string strSql, ref  List<LaYSoftParameter> Pa)
         {
-            string ls_return = ExecuteScalar(connString, cmdType, strSql, Pa);
+            string ls_return = ExecuteScalar(connString, cmdType, strSql, ref Pa);
 
             try
             { return Convert.ToInt32(ls_return); }
             catch
             { return 0; }
         }
-        public static int ExecuteScalarNum(CommandType cmdType, string strSql, List<LaYSoftParameter> Pa)
+        public static int ExecuteScalarNum(CommandType cmdType, string strSql, ref  List<LaYSoftParameter> Pa)
         {
-            return ExecuteScalarNum(null, cmdType, strSql, Pa);
+            return ExecuteScalarNum(null, cmdType, strSql, ref  Pa);
         }
         public static int ExecuteScalarNum(CommandType cmdType, string strSql)
         {
-            return ExecuteScalarNum(null, cmdType, strSql, null);
+            List<LaYSoftParameter> Pa = null;
+            return ExecuteScalarNum(null, cmdType, strSql, ref Pa);
         }
-        public static int ExecuteScalarNum(string strSql, List<LaYSoftParameter> Pa)
+        public static int ExecuteScalarNum(string strSql, ref  List<LaYSoftParameter> Pa)
         {
-            return ExecuteScalarNum(null, CommandType.Text, strSql, Pa);
+            return ExecuteScalarNum(null, CommandType.Text, strSql, ref  Pa);
         }
         public static int ExecuteScalarNum(string strSql)
         {
-            return ExecuteScalarNum(null, CommandType.Text, strSql, null);
+            return ExecuteScalarNum( CommandType.Text, strSql);
         }
     }
 }

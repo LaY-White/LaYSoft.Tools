@@ -72,7 +72,8 @@
     <Compile Include="DBClass\Model\ConnectionArg.cs" />
     <Compile Include="DBClass\Model\LaYSoftParameter.cs" />
     <Compile Include="DBClass\SqlHelper.cs" />
-    <Compile Include="DBClass\Tools.cs" />
+    <Compile Include="DBClass\DBClassTools.cs" />
+    <Compile Include="MyFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

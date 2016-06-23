@@ -111,7 +111,7 @@ namespace LaYSoft.BaseCode.DBClass.Instance
         }
 
         //执行Sql语句，返回Int 
-        public override int ExecuteNonQuery(CommandType cmdType, string strSql, List<LaYSoftParameter> Pa)
+        public override int ExecuteNonQuery(CommandType cmdType, string strSql, ref List<LaYSoftParameter> Pa)
         {
             OracleParameter[] cmdParameters = LaYSoftParameter.GetOracleParameter(Pa);
             if (!SuerConnOpen())
@@ -150,19 +150,20 @@ namespace LaYSoft.BaseCode.DBClass.Instance
         }
         public override int ExecuteNonQuery(CommandType cmdType, string strSql)
         {
-            return ExecuteNonQuery(CommandType.Text, strSql, null);
+            List<LaYSoftParameter> Pa = null;
+            return ExecuteNonQuery(CommandType.Text, strSql, ref Pa);
         }
-        public override int ExecuteNonQuery(string strSql, List<LaYSoftParameter> Pa)
+        public override int ExecuteNonQuery(string strSql, ref List<LaYSoftParameter> Pa)
         {
-            return ExecuteNonQuery(CommandType.Text, strSql, Pa);
+            return ExecuteNonQuery(CommandType.Text, strSql, ref Pa);
         }
         public override int ExecuteNonQuery(string strSql)
         {
-            return ExecuteNonQuery(CommandType.Text, strSql, null);
+            return ExecuteNonQuery(CommandType.Text, strSql);
         }
 
         //执行Sql，返回DataTable
-        public override DataTable ExecuteDataTable(CommandType cmdType, string strSql, List<LaYSoftParameter> Pa)
+        public override DataTable ExecuteDataTable(CommandType cmdType, string strSql, ref List<LaYSoftParameter> Pa)
         {
             if (!SuerConnOpen())
             { Open(); }
@@ -208,19 +209,20 @@ namespace LaYSoft.BaseCode.DBClass.Instance
         }
         public override DataTable ExecuteDataTable(CommandType cmdType, string strSql)
         {
-            return ExecuteDataTable(cmdType, strSql, null);
+            List<LaYSoftParameter> Pa = null;
+            return ExecuteDataTable(cmdType, strSql, ref Pa);
         }
-        public override DataTable ExecuteDataTable(string strSql, List<LaYSoftParameter> Pa)
+        public override DataTable ExecuteDataTable(string strSql, ref List<LaYSoftParameter> Pa)
         {
-            return ExecuteDataTable(CommandType.Text, strSql, Pa);
+            return ExecuteDataTable(CommandType.Text, strSql, ref Pa);
         }
         public override DataTable ExecuteDataTable(string strSql)
         {
-            return ExecuteDataTable(CommandType.Text, strSql, null);
+            return ExecuteDataTable(CommandType.Text, strSql);
         }
 
         //执行Sql，返回string
-        public override string ExecuteScalar(CommandType cmdType, string strSql, List<LaYSoftParameter> Pa)
+        public override string ExecuteScalar(CommandType cmdType, string strSql, ref List<LaYSoftParameter> Pa)
         {
             if (!SuerConnOpen())
             { Open(); }
@@ -263,21 +265,22 @@ namespace LaYSoft.BaseCode.DBClass.Instance
         }
         public override string ExecuteScalar(CommandType cmdType, string strSql)
         {
-            return ExecuteScalar(cmdType, strSql, null);
+            List<LaYSoftParameter> Pa = null;
+            return ExecuteScalar(cmdType, strSql, ref Pa);
         }
-        public override string ExecuteScalar(string strSql, List<LaYSoftParameter> Pa)
+        public override string ExecuteScalar(string strSql, ref List<LaYSoftParameter> Pa)
         {
-            return ExecuteScalar(CommandType.Text, strSql, Pa);
+            return ExecuteScalar(CommandType.Text, strSql, ref Pa);
         }
         public override string ExecuteScalar(string strSql)
         {
-            return ExecuteScalar(CommandType.Text, strSql, null);
+            return ExecuteScalar(CommandType.Text, strSql);
         }
 
         //执行Sql，返回int
-        public override int ExecuteScalarNum(CommandType cmdType, string strSql, List<LaYSoftParameter> Pa)
+        public override int ExecuteScalarNum(CommandType cmdType, string strSql, ref List<LaYSoftParameter> Pa)
         {
-            string ls_return = ExecuteScalar(cmdType, strSql, Pa);
+            string ls_return = ExecuteScalar(cmdType, strSql, ref Pa);
 
             try
             { return Convert.ToInt32(ls_return); }
@@ -286,15 +289,16 @@ namespace LaYSoft.BaseCode.DBClass.Instance
         }
         public override int ExecuteScalarNum(CommandType cmdType, string strSql)
         {
-            return ExecuteScalarNum(cmdType, strSql, null);
+            List<LaYSoftParameter> Pa = null;
+            return ExecuteScalarNum(cmdType, strSql, ref Pa);
         }
-        public override int ExecuteScalarNum(string strSql, List<LaYSoftParameter> Pa)
+        public override int ExecuteScalarNum(string strSql, ref List<LaYSoftParameter> Pa)
         {
-            return ExecuteScalarNum(CommandType.Text, strSql, Pa);
+            return ExecuteScalarNum(CommandType.Text, strSql, ref Pa);
         }
         public override int ExecuteScalarNum(string strSql)
         {
-            return ExecuteScalarNum(CommandType.Text, strSql, null);
+            return ExecuteScalarNum(CommandType.Text, strSql);
         }
     }
 }

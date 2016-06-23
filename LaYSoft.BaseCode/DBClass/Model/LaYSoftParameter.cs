@@ -54,8 +54,6 @@ namespace LaYSoft.BaseCode.DBClass.Model
         /// </summary>
         public bool SourceColumnNullMapping { get; set; }
 
-        public DataRowVersion SourceVersion { get; set; }
-
         /// <summary>
         /// 参数名称
         /// </summary>
@@ -93,7 +91,6 @@ namespace LaYSoft.BaseCode.DBClass.Model
                 Arr_Pa[Num].Size = For_Pa.Size;
                 Arr_Pa[Num].SourceColumn = For_Pa.SourceColumn;
                 Arr_Pa[Num].SourceColumnNullMapping = For_Pa.SourceColumnNullMapping;
-                Arr_Pa[Num].SourceVersion = For_Pa.SourceVersion;
 
                 Num++;
             }
@@ -121,7 +118,6 @@ namespace LaYSoft.BaseCode.DBClass.Model
                 Arr_Pa[Num].Size = For_Pa.Size;
                 Arr_Pa[Num].SourceColumn = For_Pa.SourceColumn;
                 Arr_Pa[Num].SourceColumnNullMapping = For_Pa.SourceColumnNullMapping;
-                Arr_Pa[Num].SourceVersion = For_Pa.SourceVersion;
 
                 Num++;
             }
@@ -148,7 +144,6 @@ namespace LaYSoft.BaseCode.DBClass.Model
                 Arr_Pa[Num].Size = For_Pa.Size;
                 Arr_Pa[Num].SourceColumn = For_Pa.SourceColumn;
                 Arr_Pa[Num].SourceColumnNullMapping = For_Pa.SourceColumnNullMapping;
-                Arr_Pa[Num].SourceVersion = For_Pa.SourceVersion;
 
                 Num++;
             }
@@ -175,7 +170,6 @@ namespace LaYSoft.BaseCode.DBClass.Model
                 Arr_Pa[Num].Size = For_Pa.Size;
                 Arr_Pa[Num].SourceColumn = For_Pa.SourceColumn;
                 Arr_Pa[Num].SourceColumnNullMapping = For_Pa.SourceColumnNullMapping;
-                Arr_Pa[Num].SourceVersion = For_Pa.SourceVersion;
 
                 Num++;
             }
@@ -202,7 +196,7 @@ namespace LaYSoft.BaseCode.DBClass.Model
                 Arr_Pa[Num].Size = For_Pa.Size;
                 Arr_Pa[Num].SourceColumn = For_Pa.SourceColumn;
                 Arr_Pa[Num].SourceColumnNullMapping = For_Pa.SourceColumnNullMapping;
-                Arr_Pa[Num].SourceVersion = For_Pa.SourceVersion;
+
                 Num++;
             }
             return Arr_Pa;
@@ -226,7 +220,7 @@ namespace LaYSoft.BaseCode.DBClass.Model
                 Pa.Size = For_Pa.Size;
                 Pa.SourceColumn = For_Pa.SourceColumn;
                 Pa.SourceColumnNullMapping = For_Pa.SourceColumnNullMapping;
-                Pa.SourceVersion = For_Pa.SourceVersion;
+
                 List_Pa.Add(Pa);
             }
 

@@ -115,20 +115,25 @@ namespace LaYSoft.BaseCode
             #endregion
 
             if (IdentityField != null)
-                Pa.Add(new LaYSoftParameter("@NewID", null, ParameterDirection.Output));
+            {
+                LaYSoftParameter NewID = new LaYSoftParameter("@NewID", null, ParameterDirection.Output);
+                NewID.Size = 9999;
+
+                Pa.Add(NewID);
+            }
 
             int rel = SqlHelper.ExecuteNonQuery(String.Format("INSERT INTO {0}({1}) VALUES({2});{3}",
                         this.TableName,
                         String.Join(",", Field.ToArray()),
                         String.Join(",", FieldValue.ToArray()),
                         IdentityField == null ? "" : "select @NewID = @@Identity;")
-                    , Pa);
+                    , ref Pa);
 
             if (IdentityField != null)
             {
                 LaYSoftParameter IdentityValue = Pa.FirstOrDefault(P => P.PaName == "@NewID");
-                if (IdentityValue != null && IdentityValue.Value != null)
-                    IdentityField.SetValue(pModel, IdentityValue.Value, null);
+                if (IdentityValue != null && IdentityValue.Value != null && IdentityValue.Value != DBNull.Value)
+                    IdentityField.SetValue(pModel, Convert.ChangeType(IdentityValue.Value, IdentityField.PropertyType), null);
             }
 
             return rel;
@@ -174,8 +179,8 @@ namespace LaYSoft.BaseCode
 
             return SqlHelper.ExecuteNonQuery(
                 String.Format("UPDATE {0} SET {1} WHERE 1=1 {2}", this.TableName,
-                    String.Join(",", FieldUpdate.ToArray()), strPrimaryKeyWhere),
-                Pa);
+                    String.Join(",", FieldUpdate.ToArray()), strPrimaryKeyWhere)
+                , ref Pa);
         }
 
         /// <summary>
@@ -210,8 +215,8 @@ namespace LaYSoft.BaseCode
                 throw new Exception(String.Format("{0}尚未设置主键", pModel.GetType().Name));
 
             return SqlHelper.ExecuteNonQuery(
-                String.Format("DELETE {0} WHERE 1=1 {2}", this.TableName, strPrimaryKeyWhere),
-                Pa);
+                String.Format("DELETE {0} WHERE 1=1 {1}", this.TableName, strPrimaryKeyWhere)
+                , ref Pa);
         }
 
 
@@ -253,7 +258,7 @@ namespace LaYSoft.BaseCode
                 throw new Exception(String.Format("{0}尚未设置主键", pModel.GetType().Name));
 
             DataTable Dt = SqlHelper.ExecuteDataTable(String.Format("SELECT TOP 1 {0} FROM {1} WHERE 1=1 {2}", strField, TableName, strPrimaryKeyWhere)
-                  , Pa);
+                  , ref Pa);
 
             IList<T> ListT = ConvertToModel(Dt);
             if (ListT.Count == 0)
@@ -277,8 +282,12 @@ namespace LaYSoft.BaseCode
             List<LaYSoftParameter> Pa = new List<LaYSoftParameter>();
 
             //查询字段，并判断是否禁止查看
-            String strField = String.Join(",", this.Fields.Where(F => !pBaseParams.DisablePropertys.Contains(F.FieldName))
-                .Select(F => "[" + F.FieldName + "]").ToArray());
+            String strField;
+            if (pBaseParams.DisablePropertys != null)
+                strField = String.Join(",", this.Fields.Where(F => !pBaseParams.DisablePropertys.Contains(F.FieldName))
+                        .Select(F => "[" + F.FieldName + "]").ToArray());
+            else
+                strField = String.Join(",", this.Fields.Select(F => "[" + F.FieldName + "]").ToArray());
 
             String StrSqlWhere = GetSqlWhere(pBaseParams, ref Pa);
 
@@ -290,7 +299,7 @@ namespace LaYSoft.BaseCode
                           pBaseParams.OrderBy, strField, this.TableName, StrSqlWhere,
                           pBaseParams.BeginRow != null ? String.Format(" AND RowNumber >= {0} ", pBaseParams.BeginRow) : "",
                           pBaseParams.EndRow != null ? String.Format(" AND {0} >= RowNumber ", pBaseParams.EndRow) : "")
-                    , Pa);
+                    , ref Pa);
 
             return this.ConvertToModel(Dt);
         }
@@ -323,7 +332,7 @@ namespace LaYSoft.BaseCode
             String StrSqlWhere = GetSqlWhere(pBaseParams, ref Pa);
 
             return SqlHelper.ExecuteScalarNum(String.Format("SELECT Count(*) FROM [{0}] WHERE 1=1 {1}", this.TableName, StrSqlWhere)
-                , Pa);
+                , ref Pa);
         }
 
 
@@ -339,13 +348,13 @@ namespace LaYSoft.BaseCode
         }
         #endregion
 
-        #region 私有方式
+        #region 公用方法
 
         /// <summary>
         /// 获取SqlWhere
         /// </summary>
         /// <returns></returns>
-        private string GetSqlWhere(BaseParams pBaseParams, ref List<LaYSoftParameter> Pa)
+        public string GetSqlWhere(BaseParams pBaseParams, ref List<LaYSoftParameter> Pa)
         {
             StringBuilder StrSqlWhere = new StringBuilder();
 
@@ -383,7 +392,7 @@ namespace LaYSoft.BaseCode
         /// <summary>
         /// 转换DataTable
         /// </summary>
-        private IList<T> ConvertToModel(DataTable dt)
+        public IList<T> ConvertToModel(DataTable dt)
         {
             // 定义集合    
             IList<T> ts = new List<T>();
@@ -408,7 +417,7 @@ namespace LaYSoft.BaseCode
 
                         object value = dr[tempName];
                         if (value != DBNull.Value)
-                            pi.SetValue(t, value, null);
+                            pi.SetValue(t, Convert.ChangeType(value, pi.PropertyType), null);
                     }
                 }
                 ts.Add(t);
